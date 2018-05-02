@@ -944,4 +944,60 @@ class Transacao
     {
         $this->sequencialRegistro = str_pad($sequencialRegistro, 6, 0, STR_PAD_LEFT);
     }
+
+    public function getTransacaoToString()
+    {
+        $stringTransacao = $this->getIdentificacaoRegistro()
+            . $this->getAgenciaDebito()
+            . $this->getDigitoAgenciaDebito()
+            . $this->getRazaoContaCorrente()
+            . $this->getContaCorrente()
+            . $this->getDigitoContaCorrente()
+            . $this->getIdentificacaoEmpresaBeneficiaria()
+            . $this->getNumeroControleParticipante()
+            . $this->getCodigoBancoDebitado()
+            . $this->getMulta()
+            . $this->getPercentualMulta()
+            . $this->getIdentificacaoTituloBanco()
+            . $this->getDigitoAutoConferencia()
+            . $this->getDescontoBonificacao()
+            . $this->getCondicaoEmissao()
+            . $this->getEmiteBoletoDebitoAutomatico()
+            . $this->getOperacaoBanco()
+            . $this->getIndicadorRateioCredito()
+            . $this->getAvisoDebitoAutomatico()
+            . str_pad('', 2, ' ', STR_PAD_RIGHT)
+            . $this->getIdentificacaoOcorrencia()
+            . $this->getNumeroDocumento()
+            . $this->getDataVencimentoTitulo()
+            . $this->getValorTitulo()
+            . $this->getBancoCobrador()
+            . $this->getAgenciaDepositaria()
+            . $this->getEspecieTitulo()
+            . $this->getIdentificacao()
+            . $this->getDataEmissaoTitulo()
+            . $this->getPrimeiraInstrucao()
+            . $this->getSegundaInstrucao()
+            . $this->getValorPorDiaATrasado()
+            . $this->getDataLimiteDesconto()
+            . $this->getValorDesconto()
+            . $this->getValorIof()
+            . $this->getValorAbatimento()
+            . $this->getTipoInscricaoPagador()
+            . $this->getNumeroInscricaoPagador()
+            . $this->getNomePagador()
+            . $this->getEnderecoPagador()
+            . $this->getPrimeiraMensagem()
+            . $this->getCep()
+            . $this->getSufixoCep()
+            . ($this->getSacador() ? : $this->getSegundaMensagem())
+            . $this->getSequencialRegistro()
+        ;
+
+        if (mb_strlen($stringTransacao) != 400) {
+            throw new \Exception("Erro ao gerar transacoes da remessa, tamanho da string invalida (length: " . mb_strlen($stringTransacao) . ")");
+        }
+
+        return $stringTransacao;
+    }
 }

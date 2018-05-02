@@ -1,56 +1,63 @@
 <?php
 
-namespace Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco;
+namespace Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\SICOOB;
 
 class Trailler
 {
 
-    /**
-     * @var int
-     */
     protected $identificacaoRegistro = 9;
 
-    /**
-     * @var string
-     */
+    protected $complementoRegistro = ' ';
+
+    protected $msgBeneficiario = ' ';
+
     protected $sequencialRegistro;
 
-    /**
-     * @return int
-     */
     public function getIdentificacaoRegistro()
     {
         return $this->identificacaoRegistro;
     }
 
-    /**
-     * @return mixed
-     */
+    public function setIdentificacaoRegistro($identificacaoRegistro)
+    {
+        $this->identificacaoRegistro = $identificacaoRegistro;
+    }
+
+    public function getComplementoRegistro()
+    {
+        return $this->complementoRegistro;
+    }
+
+    public function setComplementoRegistro($complementoRegistro)
+    {
+        $this->complementoRegistro = $complementoRegistro;
+    }
+
+    public function getMsgBeneficiario()
+    {
+        return $this->msgBeneficiario;
+    }
+
+    public function setMsgBeneficiario($msgBeneficiario)
+    {
+        $this->msgBeneficiario = $msgBeneficiario;
+    }
+
     public function getSequencialRegistro()
     {
         return $this->sequencialRegistro;
     }
 
-    /**
-     * @param mixed $sequencialRegistro
-     */
     public function setSequencialRegistro($sequencialRegistro)
     {
-        $this->sequencialRegistro = str_pad($sequencialRegistro, 6, 0, STR_PAD_LEFT);
+        $this->sequencialRegistro = $sequencialRegistro;
     }
 
-    /**
-     * @return string
-     */
     public function getTraillerToString()
     {
         $stringTrailler = $this->getIdentificacaoRegistro()
             . str_pad('', 193, ' ', STR_PAD_LEFT)
-            . str_pad('', 40, ' ', STR_PAD_LEFT)
-            . str_pad('', 40, ' ', STR_PAD_LEFT)
-            . str_pad('', 40, ' ', STR_PAD_LEFT)
-            . str_pad('', 40, ' ', STR_PAD_LEFT)
-            . str_pad('', 40, ' ', STR_PAD_LEFT)
+            . str_pad('', 200, ' ', STR_PAD_LEFT)
             . str_pad($this->getSequencialRegistro(), 6, 0, STR_PAD_LEFT)
         ;
 

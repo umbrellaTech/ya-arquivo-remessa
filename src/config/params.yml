@@ -1,0 +1,21 @@
+cnab400:
+  bradesco:
+    identificacao_registro: 0
+    identificacao_arquivo: 1
+    literal_remessa: 'REMESSA'
+    codigo_servico: '01'
+    literal_servico: 'COBRANCA'
+    numero_banco: 237
+    nome_banco: 'BRADESCO'
+    identificacao_sistema: 'MX'
+
+  sicoob:
+    identificacao_registro: 0
+    identificacao_arquivo: 1
+    literal_remessa: 'REMESSA'
+    codigo_servico: '01'
+    literal_servico: 'COBRANCA'
+    identificacao_banco: '756BANCOOBCED'
+    nome_banco: 'SICOOB'
+    identificacao_sistema: 'MX'
+
