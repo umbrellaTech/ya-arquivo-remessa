@@ -5,11 +5,6 @@ namespace Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\SICOOB;
 class Detalhe
 {
 
-
-    /**
-     * @todo : validação do numero da carteira do convenio com orgao
-     */
-
     private $identificacaoRegistro      = "1";
     private $numeroConvenioCobranca     = "000000";
     private $numeroParcela              = "01";
@@ -323,7 +318,12 @@ class Detalhe
      */
     public function setDataVencimento($dataVencimento)
     {
-        $this->dataVencimento = str_pad(substr($dataVencimento,0,6), 6, '0', STR_PAD_LEFT);
+        $this->dataVencimento = str_pad(
+            substr($dataVencimento, 0, 6),
+            6,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -343,7 +343,12 @@ class Detalhe
      */
     public function setDataEmissao($dataEmissao)
     {
-        $this->dataEmissao = str_pad(substr($dataEmissao,0,6), 6, '0', STR_PAD_LEFT);
+        $this->dataEmissao = str_pad(
+            substr($dataEmissao, 0, 6),
+            6,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -363,7 +368,12 @@ class Detalhe
      */
     public function setSequencialRegistro($sequencialRegistro)
     {
-        $this->sequencialRegistro = str_pad(substr($sequencialRegistro,0,6), 6, '0', STR_PAD_LEFT);
+        $this->sequencialRegistro = str_pad(
+            substr($sequencialRegistro, 0, 6),
+            6,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -383,7 +393,12 @@ class Detalhe
      */
     public function setDigitoVerificadorPrefixoCooperativa($digitoVerificadorPrefixoCooperativa)
     {
-        $this->digitoVerificadorPrefixoCooperativa = str_pad(substr($digitoVerificadorPrefixoCooperativa,0,1), 1, '0', STR_PAD_LEFT);
+        $this->digitoVerificadorPrefixoCooperativa = str_pad(
+            substr($digitoVerificadorPrefixoCooperativa, 0, 1),
+            1,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -403,7 +418,12 @@ class Detalhe
      */
     public function setTipoInscricaoBeneficiario($tipoInscricaoBeneficiario)
     {
-        $this->tipoInscricaoBeneficiario = str_pad(substr($tipoInscricaoBeneficiario,0,2), 2, '0', STR_PAD_LEFT);
+        $this->tipoInscricaoBeneficiario = str_pad(
+            substr($tipoInscricaoBeneficiario, 0, 2),
+            2,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -423,7 +443,12 @@ class Detalhe
      */
     public function setCpfcnpjBeneficiario($cpfcnpjBeneficiario)
     {
-        $this->cpfcnpjBeneficiario = str_pad(substr($cpfcnpjBeneficiario,0,14), 14, '0', STR_PAD_LEFT);
+        $this->cpfcnpjBeneficiario = str_pad(
+            substr($cpfcnpjBeneficiario, 0, 14),
+            14,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -443,7 +468,12 @@ class Detalhe
      */
     public function setPrefixoCooperativa($prefixoCooperativa)
     {
-        $this->prefixoCooperativa = str_pad(substr($prefixoCooperativa,0,4), 4, '0', STR_PAD_LEFT);
+        $this->prefixoCooperativa = str_pad(
+            substr($prefixoCooperativa, 0, 4),
+            4,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -463,7 +493,12 @@ class Detalhe
      */
     public function setContaCorrente($contaCorrente)
     {
-        $this->contaCorrente = str_pad(substr($contaCorrente,0,8), 8, '0', STR_PAD_LEFT);
+        $this->contaCorrente = str_pad(
+            substr($contaCorrente, 0, 8),
+            8,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -483,7 +518,12 @@ class Detalhe
      */
     public function setDigitoVerificadorConta($digitoVerificadorConta)
     {
-        $this->digitoVerificadorConta = str_pad(substr($digitoVerificadorConta,0,1), 1, '0', STR_PAD_LEFT);
+        $this->digitoVerificadorConta = str_pad(
+            substr($digitoVerificadorConta, 0, 1),
+            1,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -503,7 +543,12 @@ class Detalhe
      */
     public function setNossoNumero($nossoNumero)
     {
-        $this->nossoNumero = str_pad(substr($nossoNumero,0,12), 12, '0', STR_PAD_LEFT);
+        $this->nossoNumero = str_pad(
+            substr($nossoNumero, 0, 12),
+            12,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -523,7 +568,12 @@ class Detalhe
      */
     public function setNumeroBoleto($numeroBoleto)
     {
-        $this->numeroBoleto = str_pad(substr($numeroBoleto,0,10), 10, '0', STR_PAD_LEFT);
+        $this->numeroBoleto = str_pad(
+            substr($numeroBoleto, 0, 10),
+            10,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -543,7 +593,12 @@ class Detalhe
      */
     public function setValorTitulo($valorTitulo)
     {
-        $this->valorTitulo = str_pad(substr(number_format($valorTitulo, 2, '', ''),0,13), 13, '0', STR_PAD_LEFT);
+        $this->valorTitulo = str_pad(
+            substr(number_format($valorTitulo, 2, '', ''), 0, 13),
+            13,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -563,7 +618,12 @@ class Detalhe
      */
     public function setTipoInscricaoPagador($tipoInscricaoPagador)
     {
-        $this->tipoInscricaoPagador = str_pad(substr($tipoInscricaoPagador,0,2), 2, '0', STR_PAD_LEFT);
+        $this->tipoInscricaoPagador = str_pad(
+            substr($tipoInscricaoPagador, 0, 2),
+            2,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -583,7 +643,12 @@ class Detalhe
      */
     public function setClienteCpfCnpj($clienteCpfCnpj)
     {
-        $this->clienteCpfCnpj = str_pad(substr($clienteCpfCnpj,0,14), 14, '0', STR_PAD_LEFT);
+        $this->clienteCpfCnpj = str_pad(
+            substr($clienteCpfCnpj, 0, 14),
+            14,
+            '0',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -603,7 +668,12 @@ class Detalhe
      */
     public function setClienteNome($clienteNome)
     {
-        $this->clienteNome = str_pad(substr($clienteNome,0,40), 40, ' ', STR_PAD_RIGHT);
+        $this->clienteNome = str_pad(
+            substr($clienteNome, 0, 40),
+            40,
+            ' ',
+            STR_PAD_RIGHT
+        );
 
         return $this;
     }
@@ -623,7 +693,12 @@ class Detalhe
      */
     public function setClienteEndereco($clienteEndereco)
     {
-        $this->clienteEndereco = str_pad(substr($clienteEndereco,0,37), 37, ' ', STR_PAD_RIGHT);
+        $this->clienteEndereco = str_pad(
+            substr($clienteEndereco, 0, 37),
+            37,
+            ' ',
+            STR_PAD_RIGHT
+        );
 
         return $this;
     }
@@ -643,7 +718,12 @@ class Detalhe
      */
     public function setClienteBairro($clienteBairro)
     {
-        $this->clienteBairro = str_pad(substr($clienteBairro,0,15), 15, ' ', STR_PAD_RIGHT);
+        $this->clienteBairro = str_pad(
+            substr($clienteBairro, 0, 15),
+            15,
+            ' ',
+            STR_PAD_RIGHT
+        );
 
         return $this;
     }
@@ -663,7 +743,12 @@ class Detalhe
      */
     public function setClienteCep($clienteCep)
     {
-        $this->clienteCep = str_pad(substr($clienteCep,0,8), 8, ' ', STR_PAD_LEFT);
+        $this->clienteCep = str_pad(
+            substr($clienteCep, 0, 8),
+            8,
+            ' ',
+            STR_PAD_LEFT
+        );
 
         return $this;
     }
@@ -683,7 +768,12 @@ class Detalhe
      */
     public function setClienteCidade($clienteCidade)
     {
-        $this->clienteCidade = str_pad(substr($clienteCidade,0,15), 15, ' ', STR_PAD_RIGHT);
+        $this->clienteCidade = str_pad(
+            substr($clienteCidade, 0, 15),
+            15,
+            ' ',
+            STR_PAD_RIGHT
+        );
 
         return $this;
     }
@@ -703,7 +793,12 @@ class Detalhe
      */
     public function setClienteUF($clienteUF)
     {
-        $this->clienteUF = str_pad(substr($clienteUF,0,2), 2, ' ', STR_PAD_RIGHT);
+        $this->clienteUF = str_pad(
+            substr($clienteUF, 0, 2),
+            2,
+            ' ',
+            STR_PAD_RIGHT
+        );
 
         return $this;
     }
@@ -766,6 +861,4 @@ class Detalhe
             . $this->getSequencialRegistro()
         ;
     }
-
-
 }

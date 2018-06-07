@@ -2,12 +2,11 @@
 
 namespace Umbrella\Ya\RemessaBoleto\Builder;
 
-use \DateTime;
 use Umbrella\Ya\RemessaBoleto\Enum\BancoEnum;
-use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\Transacao;
-use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\Header;
-use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\File;
-use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\Trailler;
+use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\CEF\Detalhe;
+use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\CEF\Header;
+use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\CEF\File;
+use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\CEF\Trailler;
 
 class CEFCnab400Builder extends Builder
 {
@@ -52,7 +51,7 @@ class CEFCnab400Builder extends Builder
     protected function transacao()
     {
         $seqConvenio            = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
-        $convenioBancario       = $this->detalhesBoleto['convenios'][$seqConvenio];
+//        $convenioBancario       = $this->detalhesBoleto['convenios'][$seqConvenio];
         $documentosArrecadacao  = $this->detalhesBoleto['transacoes'][$seqConvenio];
 
         $arrTransacoes = [];
@@ -73,7 +72,7 @@ class CEFCnab400Builder extends Builder
      */
     protected function header()
     {
-        $seqConvenio = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
+//        $seqConvenio = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
 
         $header = new Header();
 
@@ -136,7 +135,4 @@ class CEFCnab400Builder extends Builder
 
         return $fullpath;
     }
-
-
-
 }

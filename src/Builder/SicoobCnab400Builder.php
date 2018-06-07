@@ -36,7 +36,7 @@ class SicoobCnab400Builder extends Builder
      * funcao para geracao do arquivo de remessa do cnab400 do boleto sicoob
      * @return string [caminho completo do arquivo de remessa]
      */
-    public function build($path)
+    public function build()
     {
         return $this
             ->detalhe()
@@ -66,9 +66,10 @@ class SicoobCnab400Builder extends Builder
             $detalhe->setDataEmissao((new \DateTime($documento['dataEmissao']))->format('dmy'));
 
             /** dados do convenio */
-            $detalhe->setTipoInscricaoBeneficiario(strlen($convenioBancario['orgao']['pessoa']['cpfCnpj']) > 11 ? "02" : "01");
+            $detalhe->setTipoInscricaoBeneficiario(
+                strlen($convenioBancario['orgao']['pessoa']['cpfCnpj']) > 11 ? "02" : "01"
+            );
             $detalhe->setCpfcnpjBeneficiario($convenioBancario['orgao']['pessoa']['cpfCnpj']);
-
             $detalhe->setPrefixoCooperativa($convenioBancario['agencia']);
             $detalhe->setDigitoVerificadorPrefixoCooperativa($convenioBancario['digitoAgencia']);
             $detalhe->setContaCorrente($convenioBancario['conta']);
@@ -107,8 +108,8 @@ class SicoobCnab400Builder extends Builder
 
         $header = new Header();
 
-        $header->setCodigoCliente(substr($convenioBancario['cedente'],0,-1));
-        $header->setDigitoVerificadorCodigo(substr($convenioBancario['cedente'],-1));
+        $header->setCodigoCliente(substr($convenioBancario['cedente'], 0, -1));
+        $header->setDigitoVerificadorCodigo(substr($convenioBancario['cedente'], -1));
 
         $header->setSequencialRegistro(1);
         $header->setPrefixoCooperativa($convenioBancario['agencia']);
@@ -116,7 +117,11 @@ class SicoobCnab400Builder extends Builder
 
         $header->setConvenioLider($convenioBancario['convenio']);
 
-        $header->setNomeBeneficiario(mb_strtoupper(mb_substr($this->detalhesBoleto['convenios'][$seqConvenio]['orgao']['descricao'], 0, 30)));
+        $header->setNomeBeneficiario(
+            mb_strtoupper(
+                mb_substr($this->detalhesBoleto['convenios'][$seqConvenio]['orgao']['descricao'], 0, 30)
+            )
+        );
         $header->setSequencialRemessa($this->detalhesBoleto['totalRemessas']);
         $header->setDataGeracao((new \DateTime())->format('dmy'));
 
@@ -172,5 +177,4 @@ class SicoobCnab400Builder extends Builder
 
         return $fullpath;
     }
-
 }

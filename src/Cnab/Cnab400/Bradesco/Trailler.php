@@ -55,10 +55,12 @@ class Trailler
         ;
 
         if (mb_strlen($stringTrailler) != 400) {
-            throw new \Exception("Erro ao gerar trailler da remessa, tamanho da string invalida (length: " . mb_strlen($stringTrailler) . ")");
+            throw new \Exception(
+                "Erro ao gerar trailler da remessa, tamanho da string invalida (length: "
+                . mb_strlen($stringTrailler) . ")"
+            );
         }
 
         return $stringTrailler;
     }
-
 }

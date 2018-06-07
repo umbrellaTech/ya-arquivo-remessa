@@ -65,3 +65,34 @@ sicoob:
                 sigla:
 cef:
 bb:
+  totalRemessas:
+  convenios:
+    SEQ:
+      agencia:
+      digitoAgencia:
+      cedente:
+      convenio:
+      conta:
+      orgao:
+        pessoa:
+          cnpj:
+        descricao:
+  transacoes:
+    SEQ:
+      dam:
+        SEQ:
+          dataVencimento:
+          dataEmissao:
+          nossoNumero:
+          numeroDocumento:
+          valor:
+          pessoa:
+            cpfCnpj:
+            nome:
+            endereco:
+            bairro:
+            cep:
+            municipio:
+              nome:
+              uf:
+                sigla:

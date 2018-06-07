@@ -37,7 +37,6 @@ class RemessaFactory
     public function create(string $path, int $bancoIdentificador, array $dadosArrecadacao)
     {
         try {
-
             return $this
                 ->validarDadosBoleto($bancoIdentificador, $dadosArrecadacao)
                 ->path($path)
@@ -46,7 +45,6 @@ class RemessaFactory
                 ->createFile()
                 ->remessaFile
             ;
-
         } catch (\Exception $e) {
             var_dump($e);
             exit;
@@ -65,7 +63,10 @@ class RemessaFactory
     private function path(string $path)
     {
         if (!is_dir($path) || !is_writable($path)) {
-            throw new \Exception("Local especificado para gravar o arquivo é invalido ou não é permitido gravar o arquivo na pasta {$path}");
+            throw new \Exception(
+                "Local especificado para gravar o arquivo é invalido"
+                . "ou não é permitido gravar o arquivo na pasta {$path}"
+            );
         }
         $this->path = rtrim($path, "/");
         return $this;
@@ -112,8 +113,11 @@ class RemessaFactory
      */
     private function build()
     {
-        if (empty($this->cnabBuilder)) throw new \Exception("Builder nao configurado!");
+        if (empty($this->cnabBuilder)) {
+            throw new \Exception("Builder nao configurado!");
+        }
         $this->cnabBuilder->build($this->path);
+
         return $this;
     }
 

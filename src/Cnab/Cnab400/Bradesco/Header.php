@@ -195,7 +195,13 @@ class Header
      */
     public function setSequencialRemessa($sequencialRemessa)
     {
-        $this->sequencialRemessa = str_pad(substr($sequencialRemessa,0,7), 7, 0, STR_PAD_LEFT);
+        $this->sequencialRemessa =
+            str_pad(
+                substr($sequencialRemessa, 0, 7),
+                7,
+                0,
+                STR_PAD_LEFT
+            );
     }
 
     /**
@@ -233,7 +239,10 @@ class Header
             . $this->getSequencialRegistro();
 
         if (mb_strlen($headerString) != 400) {
-            throw new \Exception("Erro ao gerar header da remessa, tamanho da string invalida (length: " . mb_strlen($headerString) . ")");
+            throw new \Exception(
+                "Erro ao gerar header da remessa, tamanho da string invalida (length: "
+                . mb_strlen($headerString) . ")"
+            );
         }
 
         return $headerString;

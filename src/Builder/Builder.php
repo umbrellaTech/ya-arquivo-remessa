@@ -11,7 +11,7 @@ class Builder
     /**
      * arquivo que contem os dados da geracao do boleto
      */
-    const CONFIG_FILE = "src/config/params.yml";
+    const CONFIG_FILE = "/../config/params.yml";
 
     /**
      * Builder constructor.
@@ -20,8 +20,9 @@ class Builder
      */
     public function __construct(int $bancoIdentificador)
     {
-        if (!file_exists(self::CONFIG_FILE)) {
-            throw new \Exception('Arquivo de configuração nao localizado: {self::CONFIG_FILE}');
+        $fileValidator = dirname(__FILE__) . self::CONFIG_FILE;
+        if (!file_exists($fileValidator)) {
+            throw new \Exception("Arquivo de configuração nao localizado: {$fileValidator}");
         }
 
         $this->carregarDadosBoletoBanco($bancoIdentificador);
@@ -33,25 +34,26 @@ class Builder
      */
     private function carregarDadosBoletoBanco(int $bancoIdentificador)
     {
+        $fileValidator = dirname(__FILE__) . self::CONFIG_FILE;
         switch ($bancoIdentificador) {
             case BancoEnum::BRADESCO:
-                $this->dadosBoleto = Yaml::parseFile(self::CONFIG_FILE)['cnab400']['bradesco'];
+                $this->dadosBoleto = Yaml::parseFile($fileValidator)['cnab400']['bradesco'];
                 break;
 
             case BancoEnum::SICOOB:
-                $this->dadosBoleto = Yaml::parseFile(self::CONFIG_FILE)['cnab400']['sicoob'];
+                $this->dadosBoleto = Yaml::parseFile($fileValidator)['cnab400']['sicoob'];
                 break;
 
             case BancoEnum::BANCO_DO_BRASIL:
-                $this->dadosBoleto = Yaml::parseFile(self::CONFIG_FILE)['cnab400']['bb'];
+                $this->dadosBoleto = Yaml::parseFile($fileValidator)['cnab400']['bb'];
                 break;
 
             case BancoEnum::CEF:
-                $this->dadosBoleto = Yaml::parseFile(self::CONFIG_FILE)['cnab400']['cef'];
+                $this->dadosBoleto = Yaml::parseFile($fileValidator)['cnab400']['cef'];
                 break;
 
             default:
-                throw new \Exception("Dados de boleto do banco não localizado {self::CONFIG_FILE}");
+                throw new \Exception("Dados de boleto do banco não localizado {$fileValidator}");
                 break;
         }
     }
@@ -64,7 +66,9 @@ class Builder
         $args   = func_get_args();
         $output = '';
 
-        foreach ($args as $key => $dado) { $output .= "{$dado}"; }
+        foreach ($args as $dado) {
+            $output .= "{$dado}";
+        }
 
         return isset($output) ? $output : "";
     }
@@ -90,10 +94,14 @@ class Builder
         // muda pra locale que trabalha os acentos
         setlocale(LC_CTYPE, 'pt_BR.utf-8');
         // retira os acentos.
-        $acentosRemovidos = preg_replace('#[`^~\'´"]#', null, iconv(mb_detect_encoding($string), 'ASCII//TRANSLIT', $string));
+        $acentosRemovidos = preg_replace(
+            '#[`^~\'´"]#',
+            null,
+            iconv(mb_detect_encoding($string), 'ASCII//TRANSLIT', $string)
+        );
         // retorna a locale para a que era anterior a manipulação da string.
         setlocale(LC_CTYPE, $locale);
-        return $acentosRemovidos;
+        return strtoupper($acentosRemovidos);
     }
 
     /**
@@ -102,7 +110,9 @@ class Builder
      */
     protected function getSeqConvenio($arrConvenio)
     {
-        foreach($arrConvenio as $key => $value) return $key;
+        foreach ($arrConvenio as $key => $value) {
+            return $key;
+        };
     }
 
 

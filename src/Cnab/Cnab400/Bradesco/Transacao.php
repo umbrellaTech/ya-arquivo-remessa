@@ -995,7 +995,10 @@ class Transacao
         ;
 
         if (mb_strlen($stringTransacao) != 400) {
-            throw new \Exception("Erro ao gerar transacoes da remessa, tamanho da string invalida (length: " . mb_strlen($stringTransacao) . ")");
+            throw new \Exception(
+                "Erro ao gerar transacoes da remessa, tamanho da string invalida (length: "
+                . mb_strlen($stringTransacao) . ")"
+            );
         }
 
         return $stringTransacao;
