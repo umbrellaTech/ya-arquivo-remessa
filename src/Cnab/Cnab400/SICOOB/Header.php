@@ -97,7 +97,7 @@ class Header
      */
     public function setPrefixoCooperativa($prefixoCooperativa)
     {
-        $this->prefixoCooperativa = substr(str_pad($prefixoCooperativa, 4, '0', STR_PAD_LEFT),0,4);
+        $this->prefixoCooperativa = substr(str_pad($prefixoCooperativa, 4, '0', STR_PAD_LEFT), 0, 4);
     }
 
     /**
@@ -241,7 +241,11 @@ class Header
      */
     public function setCodigoCliente($codigoCliente)
     {
-        $this->codigoCliente = substr(str_pad($codigoCliente, 8, '0', STR_PAD_LEFT),0,8);
+        $this->codigoCliente = substr(
+            str_pad($codigoCliente, 8, '0', STR_PAD_LEFT),
+            0,
+            8
+        );
     }
 
     /**
@@ -249,7 +253,7 @@ class Header
      */
     public function setDigitoVerificadorCodigo($digitoVerificadorCodigo)
     {
-        $this->digitoVerificadorCodigo = substr(str_pad($digitoVerificadorCodigo, 1, '0', STR_PAD_LEFT),0,1);
+        $this->digitoVerificadorCodigo = substr(str_pad($digitoVerificadorCodigo, 1, '0', STR_PAD_LEFT), 0, 1);
     }
 
     /**
@@ -265,7 +269,7 @@ class Header
      */
     public function setNomeBeneficiario($nomeBeneficiario)
     {
-        $this->nomeBeneficiario = mb_strtoupper(str_pad($nomeBeneficiario, 30, ' ', STR_PAD_RIGHT));;
+        $this->nomeBeneficiario = mb_strtoupper(str_pad($nomeBeneficiario, 30, ' ', STR_PAD_RIGHT));
     }
 
     /**
@@ -290,7 +294,11 @@ class Header
 
     public function setDigitoVerificadorCooperativa($digitoVerificadorCooperativa)
     {
-        $this->digitoVerificadorCooperativa = substr(str_pad($digitoVerificadorCooperativa, 1, '0', STR_PAD_LEFT),0,1);
+        $this->digitoVerificadorCooperativa = substr(
+            str_pad($digitoVerificadorCooperativa, 1, '0', STR_PAD_LEFT),
+            0,
+            1
+        );
     }
 
     public function setSequencialRegistro($sequencialRegistro)
@@ -300,7 +308,12 @@ class Header
 
     public function setSequencialRemessa($sequencialRemessa)
     {
-        $this->sequencialRemessa = str_pad(substr($sequencialRemessa,0,7), 7, 0, STR_PAD_LEFT);
+        $this->sequencialRemessa = str_pad(
+            substr($sequencialRemessa, 0, 7),
+            7,
+            0,
+            STR_PAD_LEFT
+        );
     }
 
     public function getHeaderToString()
@@ -310,19 +323,18 @@ class Header
             . $this->getLiteralRemessa()                                             #7
             . $this->getCodigoServico()                                              #2
             . $this->getLiteralServico()                                             #8
-            . str_pad(substr($this->getComplementoRegistro(),0,7), 7, ' ', STR_PAD_LEFT)         #7
+            . str_pad(substr($this->getComplementoRegistro(), 0, 7), 7, ' ', STR_PAD_LEFT)         #7
             . $this->getPrefixoCooperativa()                                         #4
             . $this->getDigitoVerificadorCooperativa()                               #1
             . $this->getCodigoCliente()                                              #8
             . $this->getDigitoVerificadorCodigo()                                    #1
-            . str_pad(substr($this->getConvenioLider(),0,6), 6, 0, STR_PAD_LEFT)                 #6
+            . str_pad(substr($this->getConvenioLider(), 0, 6), 6, 0, STR_PAD_LEFT)                 #6
             . $this->getNomeBeneficiario()                                           #30
             . str_pad($this->getIdentificacaoBanco(), 18, ' ', STR_PAD_RIGHT)        #18
             . $this->dataGeracao                                                     #6
             . $this->sequencialRemessa                  #7
             . str_pad($this->getComplementoRegistro(), 287, ' ', STR_PAD_RIGHT)      #287
-            . str_pad($this->sequencialRegistro, 6, 0, STR_PAD_LEFT)                 #6
-        ;
+            . str_pad($this->sequencialRegistro, 6, 0, STR_PAD_LEFT);                 #6
 
         if (mb_strlen($headerString) != 400) {
             throw new \Exception("Erro ao gerar header da remessa, tamanho da string invalida");
@@ -330,5 +342,4 @@ class Header
 
         return $headerString;
     }
-
 }

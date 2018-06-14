@@ -4,7 +4,6 @@ namespace Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\BB;
 
 class Header
 {
-
     private $idRegistroHeader;
     private $tipoOperacao;
     private $tipoOperacaoExtenso;
@@ -129,7 +128,13 @@ class Header
      */
     public function setComplementoRegistroBranco($complementoRegistroBranco)
     {
-        $this->complementoRegistroBranco = str_pad(mb_substr($complementoRegistroBranco,0,7), 7, " ", STR_PAD_LEFT);
+        $this->complementoRegistroBranco = str_pad(
+            mb_substr($complementoRegistroBranco, 0, 7),
+            7,
+            " ",
+            STR_PAD_RIGHT
+        );
+
         return $this;
     }
 
@@ -147,7 +152,13 @@ class Header
      */
     public function setPrefixoAgencia($prefixoAgencia)
     {
-        $this->prefixoAgencia = str_pad(mb_substr($prefixoAgencia,0,4), 4, '0', STR_PAD_LEFT);
+        $this->prefixoAgencia = str_pad(
+            mb_substr($prefixoAgencia, 0, 4),
+            4,
+            '0',
+            STR_PAD_LEFT
+        );
+
         return $this;
     }
 
@@ -165,7 +176,13 @@ class Header
      */
     public function setPrefixoAgenciaDV($prefixoAgenciaDV)
     {
-        $this->prefixoAgenciaDV = str_pad(mb_substr($prefixoAgenciaDV,0,1), 1, '0', STR_PAD_LEFT);
+        $this->prefixoAgenciaDV = str_pad(
+            mb_substr($prefixoAgenciaDV, 0, 1),
+            1,
+            '0',
+            STR_PAD_LEFT
+        );
+
         return $this;
     }
 
@@ -183,7 +200,13 @@ class Header
      */
     public function setContaCorrente($contaCorrente)
     {
-        $this->contaCorrente = str_pad(mb_substr($contaCorrente,0,8), 8, '0', STR_PAD_LEFT);
+        $this->contaCorrente = str_pad(
+            mb_substr($contaCorrente, 0, 8),
+            8,
+            '0',
+            STR_PAD_LEFT
+        );
+
         return $this;
     }
 
@@ -201,7 +224,13 @@ class Header
      */
     public function setContaCorrenteDV($contaCorrenteDV)
     {
-        $this->contaCorrenteDV = str_pad(mb_substr($contaCorrenteDV,0,1), 1, '0', STR_PAD_LEFT);;
+        $this->contaCorrenteDV = str_pad(
+            mb_substr($contaCorrenteDV, 0, 1),
+            1,
+            '0',
+            STR_PAD_LEFT
+        );
+
         return $this;
     }
 
@@ -219,7 +248,13 @@ class Header
      */
     public function setComplementoRegistro($complementoRegistro)
     {
-        $this->complementoRegistro = str_pad(mb_substr($complementoRegistro,0,6), 6, '0', STR_PAD_LEFT);
+        $this->complementoRegistro = str_pad(
+            mb_substr($complementoRegistro, 0, 6),
+            6,
+            '0',
+            STR_PAD_LEFT
+        );
+
         return $this;
     }
 
@@ -237,14 +272,19 @@ class Header
      */
     public function setNomeCedente($nomeCedente)
     {
-        $this->nomeCedente = str_pad(mb_substr($nomeCedente,0,30), 30, ' ', STR_PAD_LEFT);
+        $this->nomeCedente = str_pad(
+            mb_substr($nomeCedente, 0, 30),
+            30,
+            ' ',
+            STR_PAD_RIGHT
+        );
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getIdBanco(): string
+    public function getIdBanco()
     {
         return $this->idBanco;
     }
@@ -253,9 +293,15 @@ class Header
      * @param string $idBanco
      * @return Header
      */
-    public function setIdBanco(string $idBanco): Header
+    public function setIdBanco(string $idBanco)
     {
-        $this->idBanco = str_pad(mb_substr($idBanco,0,18), 18, ' ', STR_PAD_LEFT);
+        $this->idBanco = str_pad(
+            mb_substr($idBanco, 0, 18),
+            18,
+            ' ',
+            STR_PAD_RIGHT
+        );
+
         return $this;
     }
 
@@ -273,7 +319,13 @@ class Header
      */
     public function setDtGravacao($dtGravacao)
     {
-        $this->dtGravacao = str_pad(mb_substr($dtGravacao,0,6), 6, '0', STR_PAD_LEFT);
+        $this->dtGravacao = str_pad(
+            mb_substr($dtGravacao, 0, 6),
+            6,
+            '0',
+            STR_PAD_LEFT
+        );
+
         return $this;
     }
 
@@ -291,7 +343,13 @@ class Header
      */
     public function setSequencialRemessa($sequencialRemessa)
     {
-        $this->sequencialRemessa = str_pad(mb_substr($sequencialRemessa,0,7), 7, '0', STR_PAD_LEFT);
+        $this->sequencialRemessa = str_pad(
+            mb_substr($sequencialRemessa, 0, 7),
+            7,
+            '0',
+            STR_PAD_LEFT
+        );
+
         return $this;
     }
 
@@ -309,7 +367,13 @@ class Header
      */
     public function setComplementoRegistroBranco2($complementoRegistroBranco2)
     {
-        $this->complementoRegistroBranco2 = str_pad(mb_substr($complementoRegistroBranco2,0,22), 22, " ", STR_PAD_LEFT);
+        $this->complementoRegistroBranco2 = str_pad(
+            mb_substr($complementoRegistroBranco2, 0, 22),
+            22,
+            " ",
+            STR_PAD_RIGHT
+        );
+
         return $this;
     }
 
@@ -327,7 +391,13 @@ class Header
      */
     public function setNumeroConvenioLider($numeroConvenioLider)
     {
-        $this->numeroConvenioLider = str_pad(mb_substr($numeroConvenioLider,0,7), 7, '0', STR_PAD_LEFT);
+        $this->numeroConvenioLider = str_pad(
+            substr($numeroConvenioLider, 0, 7),
+            7,
+            '0',
+            STR_PAD_LEFT
+        );
+
         return $this;
     }
 
@@ -345,7 +415,13 @@ class Header
      */
     public function setComplementoRegistroBranco3($complementoRegistroBranco3)
     {
-        $this->complementoRegistroBranco3 = str_pad(mb_substr($complementoRegistroBranco3,0,258), 258, " ", STR_PAD_LEFT);
+        $this->complementoRegistroBranco3 = str_pad(
+            mb_substr($complementoRegistroBranco3, 0, 258),
+            258,
+            " ",
+            STR_PAD_RIGHT
+        );
+
         return $this;
     }
 
@@ -363,7 +439,13 @@ class Header
      */
     public function setSequencialRegistro($sequencialRegistro)
     {
-        $this->sequencialRegistro = str_pad(mb_substr($sequencialRegistro,0,6), 6, '0', STR_PAD_LEFT);
+        $this->sequencialRegistro = str_pad(
+            mb_substr($sequencialRegistro, 0, 6),
+            6,
+            '0',
+            STR_PAD_LEFT
+        );
+
         return $this;
     }
 
@@ -390,8 +472,6 @@ class Header
             . $this->getComplementoRegistroBranco2()
             . $this->getNumeroConvenioLider()
             . $this->getComplementoRegistroBranco3()
-            . $this->getSequencialRegistro()
-            ;
+            . $this->getSequencialRegistro();
     }
-
 }

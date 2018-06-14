@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Umbrella\Ya\RemessaBoleto;
 
 use Umbrella\Ya\RemessaBoleto\Enum\BancoEnum;
@@ -12,7 +11,6 @@ use Umbrella\Ya\RemessaBoleto\Validator\Validator;
 
 class RemessaFactory
 {
-
     /**
      * Caminho da pasta onde salva o arquivo
      * @var string
@@ -37,16 +35,13 @@ class RemessaFactory
     public function create(string $path, int $bancoIdentificador, array $dadosArrecadacao)
     {
         try {
-
             return $this
                 ->validarDadosBoleto($bancoIdentificador, $dadosArrecadacao)
                 ->path($path)
                 ->configure($bancoIdentificador, $dadosArrecadacao)
                 ->build()
                 ->createFile()
-                ->remessaFile
-            ;
-
+                ->remessaFile;
         } catch (\Exception $e) {
             var_dump($e);
             exit;
@@ -65,18 +60,22 @@ class RemessaFactory
     private function path(string $path)
     {
         if (!is_dir($path) || !is_writable($path)) {
-            throw new \Exception("Local especificado para gravar o arquivo é invalido ou não é permitido gravar o arquivo na pasta {$path}");
+            throw new \Exception(
+                "Local especificado para gravar o arquivo é invalido"
+                . "ou não é permitido gravar o arquivo na pasta {$path}"
+            );
         }
         $this->path = rtrim($path, "/");
+
         return $this;
     }
 
     /**
      * define a classe que gera o arquivo
+     * @param int $bancoIdentificador
+     * @param array $dadosArrecadacao
+     * @return $this
      * @throws \Exception
-     * @param  int    $bancoIdentificador
-     * @param  array  $dadosArrecadacao
-     * @return RemessaFactory
      */
     private function configure(int $bancoIdentificador, array $dadosArrecadacao)
     {
@@ -102,6 +101,7 @@ class RemessaFactory
                 );
                 break;
         }
+
         return $this;
     }
 
@@ -112,8 +112,11 @@ class RemessaFactory
      */
     private function build()
     {
-        if (empty($this->cnabBuilder)) throw new \Exception("Builder nao configurado!");
+        if (empty($this->cnabBuilder)) {
+            throw new \Exception("Builder nao configurado!");
+        }
         $this->cnabBuilder->build($this->path);
+
         return $this;
     }
 
@@ -124,12 +127,16 @@ class RemessaFactory
     private function createFile()
     {
         $this->remessaFile = $this->cnabBuilder->montarArquivo($this->path);
+
         return $this;
     }
 
     /**
      * Validar dados do boleto
-     * @return RemessaFactory
+     * @param $identificadorBanco
+     * @param $dadosArrecadacao
+     * @return $this
+     * @throws \Exception
      */
     private function validarDadosBoleto($identificadorBanco, $dadosArrecadacao)
     {

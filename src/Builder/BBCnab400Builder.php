@@ -2,7 +2,6 @@
 
 namespace Umbrella\Ya\RemessaBoleto\Builder;
 
-use \DateTime;
 use Umbrella\Ya\RemessaBoleto\Enum\BancoEnum;
 use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\BB\Detalhe;
 use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\BB\Header;
@@ -11,7 +10,6 @@ use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\BB\Trailler;
 
 class BBCnab400Builder extends Builder
 {
-
     /**
      * Dados configurados no arquivo "src/config/params.yml"
      * @var array
@@ -39,8 +37,7 @@ class BBCnab400Builder extends Builder
         return $this
             ->detalhes()
             ->header()
-            ->trailler()
-            ;
+            ->trailler();
     }
 
     /**
@@ -49,21 +46,19 @@ class BBCnab400Builder extends Builder
      */
     protected function detalhes()
     {
-        $seqConvenio            = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
-        $convenioBancario       = $this->detalhesBoleto['convenios'][$seqConvenio];
-        $documentosArrecadacao  = $this->detalhesBoleto['transacoes'][$seqConvenio];
-
+        $seqConvenio = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
+        $convenioBancario = $this->detalhesBoleto['convenios'][$seqConvenio];
+        $documentosArrecadacao = $this->detalhesBoleto['transacoes'][$seqConvenio];
         $arrDetalhes = [];
-        $sequencial = 2;
 
-        foreach ($documentosArrecadacao['dam'] as $key => $documento) {
+        foreach ($documentosArrecadacao['dam'] as $documento) {
             $detalhe = new Detalhe;
 
             $detalhe->setIdentificacaoRegistro(7);
-            $detalhe->setTipoInscricaoCedente(strlen($convenioBancario['orgao']['pessoa']['cpfCnpj']) > 11 ? "02" : "01");
-            $detalhe->setNumeroCPFCNPJCedente($convenioBancario['orgao']['pessoa']['cpfCnpj']);
+            $detalhe->setTipoInscricaoCedente("02");
+            $detalhe->setNumeroCPFCNPJCedente($convenioBancario['orgao']['pessoa']['cnpj']);
             $detalhe->setPrefixoAgencia($convenioBancario['agencia']);
-            $detalhe->setPrefixoAgenciaDV($convenioBancario['digitoAgencia']);
+            $detalhe->setPrefixoAgenciaDV(mb_strtoupper($convenioBancario['digitoAgencia']));
             $detalhe->setContaCorrenteCedente($convenioBancario['conta']);
             $detalhe->setContaCorrenteDVCedente($convenioBancario['digitoConta']);
             $detalhe->setConvenioCobrancaCedente($convenioBancario['convenio']);
@@ -72,26 +67,25 @@ class BBCnab400Builder extends Builder
             $detalhe->setNumeroPrestacao('00');
             $detalhe->setGrupoValor('00');
             $detalhe->setComplementoRegistroBranco1('');
-            $detalhe->setMsgSacadorAvalista(' ');
+            $detalhe->setMsgSacadorAvalista('');
             $detalhe->setPrefixoTitulo('');
-            $detalhe->setVariacaoCarteira($documento['carteira']['nome']);
+            $detalhe->setVariacaoCarteira($convenioBancario['variacaoCarteira']);
             $detalhe->setContaCaucao('0');
             $detalhe->setNumeroBordero('000000');
             $detalhe->setTipoCobranca('');
-            $detalhe->setCarteiraCobranca('');
+            $detalhe->setCarteiraCobranca($convenioBancario['carteira']['nome']);
             $detalhe->setComando('01');
             $detalhe->setNumTituloCedente('');
             $detalhe->setDtVencimento((new \DateTime($documento['dataVencimento']))->format('dmy'));
             $detalhe->setVlTitulo($documento['valor']);
-            $detalhe->setEspecieTitulo('26');
             $detalhe->setNumBanco('001');
             $detalhe->setPrefixoAgenciaCobradora('0000');
-            $detalhe->setPrefixoAgenciaDVCobranca(' ');
-            $detalhe->setEspecieTitulo('');
+            $detalhe->setPrefixoAgenciaDVCobranca('');
+            $detalhe->setEspecieTitulo('12');
             $detalhe->setAceiteTitulo('N');
             $detalhe->setDtEmissaoTitulo((new \DateTime($documento['dataEmissao']))->format('dmy'));
             $detalhe->setInstrucaoCodificada1('00');
-            $detalhe->setInstrucaoCodificada2('00');
+            $detalhe->setInstrucaoCodificada2('');
             $detalhe->setJurisMoraDia('');
             $detalhe->setDtLimiteConcessaoDesconto('');
             $detalhe->setVlDesconto('');
@@ -99,20 +93,21 @@ class BBCnab400Builder extends Builder
             $detalhe->setVlAbatimento('');
             $detalhe->setTipoOperacaoSacado(strlen($documento['pessoa']['cpfCnpj']) > 11 ? "02" : "01");
             $detalhe->setCpfCnpjSacado($documento['pessoa']['cpfCnpj']);
-            $detalhe->setNomeSacado($documento['pessoa']['nome']);
+            $detalhe->setNomeSacado($this->removerAcentos($documento['pessoa']['nome']));
             $detalhe->setComplementoRegistroBranco2('');
-            $detalhe->setEnderecoSacado($documento['pessoa']['endereco']);
-            $detalhe->setBairroSacado($documento['pessoa']['bairro']);
+            $detalhe->setEnderecoSacado($this->removerAcentos($documento['pessoa']['endereco']));
+            $detalhe->setBairroSacado($this->removerAcentos($documento['pessoa']['bairro']));
             $detalhe->setCepSacado($documento['pessoa']['cep']);
-            $detalhe->setCidadeSacado($documento['pessoa']['municipio']['nome']);
-            $detalhe->setUfCidadeSacado($documento['pessoa']['municipio']['uf']['sigla']);
-            $detalhe->setObsMensagemSacadorAvalista(''); /***/
-            $detalhe->setNumDiasProtesto(''); /***/
+            $detalhe->setCidadeSacado($this->removerAcentos($documento['pessoa']['municipio']['nome']));
+            $detalhe->setUfCidadeSacado($this->removerAcentos($documento['pessoa']['municipio']['uf']['sigla']));
+            $detalhe->setObsMensagemSacadorAvalista('');
+            $detalhe->setNumDiasProtesto('');
             $detalhe->setComplementoRegistroBranco3('');
 
             $arrDetalhes[] = $detalhe;
         }
         $this->detalhes = $arrDetalhes;
+
         return $this;
     }
 
@@ -122,8 +117,10 @@ class BBCnab400Builder extends Builder
      */
     protected function header()
     {
-        $seqConvenio    = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
-        $header         = new Header();
+        $seqConvenio = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
+        $convenioBancario = $this->detalhesBoleto['convenios'][$seqConvenio];
+
+        $header = new Header();
 
         $header->setIdRegistroHeader($this->dadosBoleto['identificacao_registro']);
         $header->setTipoOperacao($this->dadosBoleto['identificacao_operacao']);
@@ -139,12 +136,12 @@ class BBCnab400Builder extends Builder
         $header->setComplementoRegistroBranco2('');
         $header->setComplementoRegistroBranco3('');
 
-        $header->setNomeCedente(mb_strtoupper('NOME CEDENTE LTDA'));
-        $header->setPrefixoAgencia('1234');
-        $header->setPrefixoAgenciaDV('1');
-        $header->setContaCorrente('1231231');
-        $header->setContaCorrenteDV('1');
-        $header->setNumeroConvenioLider($seqConvenio);
+        $header->setNomeCedente($this->removerAcentos($convenioBancario['orgao']['pessoa']['nome']));
+        $header->setPrefixoAgencia($convenioBancario['agencia']);
+        $header->setPrefixoAgenciaDV($convenioBancario['digitoAgencia']);
+        $header->setContaCorrente($convenioBancario['conta']);
+        $header->setContaCorrenteDV($convenioBancario['digitoConta']);
+        $header->setNumeroConvenioLider($convenioBancario['convenio']);
 
         $header->setSequencialRegistro('1');
 
@@ -159,7 +156,7 @@ class BBCnab400Builder extends Builder
     protected function trailler()
     {
         $trailler = new Trailler();
-        $trailler->setSequencialRegistro(123);
+        $trailler->setSequencialRegistro('');
         $this->trailler = $trailler;
         return $this;
     }
@@ -180,30 +177,28 @@ class BBCnab400Builder extends Builder
             throw new \Exception("Não foi possivel abrir o arquivo para criar a remessa {$fullpath}");
         }
 
-        $header     = $this->header;
+        $header = $this->header;
         $transacoes = $this->detalhes;
-        $trailler   = $this->trailler;
+        $trailler = $this->trailler;
 
-        $stringHeader = $header->getHeaderToString();
+        $stringHeader = mb_convert_encoding($header->getHeaderToString() . "\n", 'ISO-8859-1', 'UTF-8');
 
-        fwrite($file, $stringHeader . "\n");
+        fwrite($file, $stringHeader);
 
         $sequencialRegistro = 2;
 
         foreach ($transacoes as $transacao) {
             $transacao->setSequencialRegistro($sequencialRegistro++);
             $stringTransacao = $transacao->getDetalhesToString();
-            fwrite($file, $stringTransacao . "\n");
+            fwrite($file, mb_convert_encoding($stringTransacao . "\n", 'ISO-8859-1', 'UTF-8'));
         }
 
         $trailler->setSequencialRegistro($sequencialRegistro);
         $stringTrailler = $trailler->getTraillerToString();
 
-        fwrite($file, $stringTrailler);
+        fwrite($file, mb_convert_encoding($stringTrailler . "\n", 'ISO-8859-1', 'UTF-8'));
         fclose($file);
+
         return $fullpath;
     }
-
-
-
 }

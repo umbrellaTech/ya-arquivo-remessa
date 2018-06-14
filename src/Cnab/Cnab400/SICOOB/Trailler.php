@@ -58,14 +58,15 @@ class Trailler
         $stringTrailler = $this->getIdentificacaoRegistro()
             . str_pad('', 193, ' ', STR_PAD_LEFT)
             . str_pad('', 200, ' ', STR_PAD_LEFT)
-            . str_pad($this->getSequencialRegistro(), 6, 0, STR_PAD_LEFT)
-        ;
+            . str_pad($this->getSequencialRegistro(), 6, 0, STR_PAD_LEFT);
 
         if (mb_strlen($stringTrailler) != 400) {
-            throw new \Exception("Erro ao gerar trailler da remessa, tamanho da string invalida (length: " . mb_strlen($stringTrailler) . ")");
+            throw new \Exception(
+                "Erro ao gerar trailler da remessa, tamanho da string invalida (length: "
+                . mb_strlen($stringTrailler) . ")"
+            );
         }
 
         return $stringTrailler;
     }
-
 }

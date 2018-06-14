@@ -4,20 +4,18 @@ namespace Umbrella\Ya\RemessaBoleto\Validator;
 
 use Symfony\Component\Yaml\Yaml;
 use Umbrella\Ya\RemessaBoleto\Enum\BancoEnum;
-use \Exception;
 
 class Validator
 {
     /**
      * arquivo que contem os dados da geracao do boleto
      */
-    const CONFIG_FILE = "src/config/validator.yml";
+    const CONFIG_FILE = "/../config/validator.yml";
 
     /**
      * @var array
      */
     private $dataValidator;
-
 
     /**
      * @var array
@@ -30,8 +28,10 @@ class Validator
      */
     public function __construct(int $bancoIdentificador)
     {
-        if (!file_exists(self::CONFIG_FILE)) {
-            throw new \Exception("Arquivo de configuração nao localizado: " . self::CONFIG_FILE);
+        $fileValidator = dirname(__FILE__) . self::CONFIG_FILE;
+
+        if (!file_exists($fileValidator)) {
+            throw new \Exception("Arquivo de configuração nao localizado: " . $fileValidator);
         }
 
         $this->loadDataValidator($bancoIdentificador);
@@ -45,24 +45,28 @@ class Validator
      */
     private function loadDataValidator(int $bancoIdentificador)
     {
+        $configFile = dirname(__FILE__) . self::CONFIG_FILE;
+        $fileValidator = file_get_contents($configFile);
+        $fileParsed = Yaml::parse($fileValidator);
+
         switch ($bancoIdentificador) {
             case BancoEnum::BRADESCO:
-                $this->dataValidator = Yaml::parseFile(self::CONFIG_FILE)['bradesco'];
+                $this->dataValidator = $fileParsed['bradesco'];
                 break;
 
             case BancoEnum::SICOOB:
-                $this->dataValidator = Yaml::parseFile(self::CONFIG_FILE)['sicoob'];
+                $this->dataValidator = $fileParsed['sicoob'];
                 break;
 
             case BancoEnum::CEF:
-                $this->dataValidator = Yaml::parseFile(self::CONFIG_FILE)['cef'];
+                $this->dataValidator = $fileParsed['cef'];
                 break;
 
             case BancoEnum::BANCO_DO_BRASIL:
-                $this->dataValidator = Yaml::parseFile(self::CONFIG_FILE)['bb'];
+                $this->dataValidator = $fileParsed['bb'];
                 break;
             default:
-                throw new \Exception("Objeto de validação do banco não localizado " . self::CONFIG_FILE);
+                throw new \Exception("Objeto de validação do banco não localizado " . $configFile);
                 break;
         }
     }
@@ -77,7 +81,7 @@ class Validator
         $this->compareArray($this->dataValidator, $data);
 
         if (count($this->emptyFields)) {
-            throw new \Exception("Faltando dados: " . print_r($this->emptyFields,1));
+            throw new \Exception("Faltando dados: " . print_r([$this->emptyFields, 'data' => $data], 1));
         }
     }
 
@@ -88,7 +92,8 @@ class Validator
      */
     private function compareArray($dataValidator, $data, $emptyFields = null)
     {
-        $emptyFields = $emptyFields ?? [];
+        $emptyFields = $emptyFields ?: [];
+
         foreach (array_keys($dataValidator) as $value) {
             if (is_array($dataValidator[$value])) {
                 $controller = ($value == "SEQ") ? key($data) : $value;
@@ -101,5 +106,4 @@ class Validator
             }
         }
     }
-
 }

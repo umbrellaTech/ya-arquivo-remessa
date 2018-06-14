@@ -2,7 +2,6 @@
 
 namespace Umbrella\Ya\RemessaBoleto\Builder;
 
-use \DateTime;
 use Umbrella\Ya\RemessaBoleto\Enum\BancoEnum;
 use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\Transacao;
 use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\Header;
@@ -68,7 +67,15 @@ class BradescoCnab400Builder extends Builder
             );
 
             $transacao->setIdentificacaoTituloBanco($this->parseInteger(substr($documento['nossoNumero'], 2, 12)));
-            $transacao->setDigitoAutoConferencia(mb_substr($documento['nossoNumero'], strlen($documento['nossoNumero']) - 1));
+            $transacao->setDigitoAutoConferencia(
+                mb_substr(
+                    $documento['nossoNumero'],
+                    strlen(
+                        $documento['nossoNumero']
+                    ) - 1
+                )
+            );
+
             $transacao->setNumeroDocumento($documento['numeroDocumento']);
             $transacao->setValorTitulo(str_replace(['.', ','], '', $documento['valor']));
             $transacao->setNumeroInscricaoPagador($documento['pessoa']['cpfCnpj']);
@@ -128,7 +135,15 @@ class BradescoCnab400Builder extends Builder
         $seqConvenio = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
 
         $header = new Header();
-        $header->setRazaoSocial(mb_strtoupper(mb_substr($this->detalhesBoleto['convenios'][$seqConvenio]['orgao']['descricao'], 0, 30)));
+        $header->setRazaoSocial(
+            mb_strtoupper(
+                mb_substr(
+                    $this->detalhesBoleto['convenios'][$seqConvenio]['orgao']['descricao'],
+                    0,
+                    30
+                )
+            )
+        );
         $header->setCodigoEmpresa($this->detalhesBoleto['convenios'][$seqConvenio]['convenio']);
         $header->setDataGeracao((new \DateTime())->format('dmy'));
         $header->setSequencialRegistro(1);
@@ -188,7 +203,4 @@ class BradescoCnab400Builder extends Builder
 
         return $fullpath;
     }
-
-
-
 }
