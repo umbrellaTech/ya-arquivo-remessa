@@ -2,16 +2,18 @@
 
 namespace Umbrella\Ya\RemessaBoleto\Builder;
 
-use \DateTime;
+use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\CEF\Detalhe;
 use Umbrella\Ya\RemessaBoleto\Enum\BancoEnum;
-use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\Transacao;
 use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\Header;
 use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\File;
 use Umbrella\Ya\RemessaBoleto\Cnab\Cnab400\Bradesco\Trailler;
 
+/**
+ * Class CEFCnab400Builder
+ * @package Umbrella\Ya\RemessaBoleto\Builder
+ */
 class CEFCnab400Builder extends Builder
 {
-
     /**
      * Dados configurados no arquivo "src/config/params.yml"
      * @var array
@@ -27,6 +29,7 @@ class CEFCnab400Builder extends Builder
     /**
      * CEFCnab400Builder constructor.
      * @param array $detalhesDoBoleto
+     * @throws \Exception
      */
     public function __construct(array $detalhesDoBoleto)
     {
@@ -43,7 +46,7 @@ class CEFCnab400Builder extends Builder
             ->transacao()
             ->header()
             ->trailler()
-            ;
+        ;
     }
 
     /**
@@ -52,19 +55,15 @@ class CEFCnab400Builder extends Builder
     protected function transacao()
     {
         $seqConvenio            = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
-        $convenioBancario       = $this->detalhesBoleto['convenios'][$seqConvenio];
         $documentosArrecadacao  = $this->detalhesBoleto['transacoes'][$seqConvenio];
-
         $arrTransacoes = [];
 
         foreach ($documentosArrecadacao['dam'] as $key => $documento) {
-            $transacao = new Detalhe;
-
-
-
-            $arrTransacoes[] = $transacao;
+            $arrTransacoes[] = new Detalhe();
         }
+
         $this->transacoes = $arrTransacoes;
+
         return $this;
     }
 
@@ -73,12 +72,8 @@ class CEFCnab400Builder extends Builder
      */
     protected function header()
     {
-        $seqConvenio = $this->getSeqConvenio($this->detalhesBoleto['convenios']);
+        $this->header = new Header();
 
-        $header = new Header();
-
-
-        $this->header = $header;
         return $this;
     }
 
@@ -102,7 +97,6 @@ class CEFCnab400Builder extends Builder
     {
         $fileName = (new File())->buildName();
         $fullpath = $path . '/' . $fileName;
-
         $file = fopen($fullpath, 'w');
 
         if (!file_exists($fullpath)) {
@@ -112,31 +106,22 @@ class CEFCnab400Builder extends Builder
         $header     = $this->header;
         $transacoes = $this->transacoes;
         $trailler   = $this->trailler;
-
         $stringHeader = $header->getHeaderToString();
-
         fwrite($file, $stringHeader . "\n");
-
         $sequencialRegistro = 2;
 
         foreach ($transacoes as $transacao) {
             $transacao->setSequencialRegistro($sequencialRegistro);
-
             $stringTransacao = $transacao->getTransacaoToString();
-
             $sequencialRegistro++;
             fwrite($file, $stringTransacao . "\n");
         }
 
         $trailler->setSequencialRegistro($sequencialRegistro);
         $stringTrailler = $trailler->getTraillerToString();
-
         fwrite($file, $stringTrailler);
         fclose($file);
 
         return $fullpath;
     }
-
-
-
 }
